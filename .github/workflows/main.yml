@@ -34,8 +34,8 @@ jobs:
         with:
           source-folder: code
 
-      # You can use "run-command" to execute custom MATLAB scripts, functions, or statements.
-      #- name: Run custom testing procedure
-      #  uses: matlab-actions/run-command@v1
-      #  with:
-      #    command: disp('Running my custom testing procedure!'); addpath('code'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
+  release:
+    name: Release GitHub Actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: technote-space/release-github-actions@v6
