@@ -1,0 +1,9 @@
+%% datos
+m_va = 0.622;
+a = 16.54; b = 3985; c = -39.0;
+p = 101325;
+T = 273;
+phi = 0.1;
+
+calc = calculadora(101325, 283);
+p_s = calc.psat0();
