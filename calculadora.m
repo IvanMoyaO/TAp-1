@@ -7,8 +7,11 @@ classdef calculadora
         a = 16.54; %Antoine
         b = 3985; %Antoine
         c = -39.0; %Antoine
-        pamb %presion ambiente
-        Tamb %temperatura ambiente
+        cpa = 1004;
+        cpv = 2050;
+        pamb; %presion ambiente
+        Tamb; %temperatura ambiente
+        cagua = 4180;
     end
     
     methods
@@ -54,7 +57,20 @@ classdef calculadora
             phi = varargin{1};
 
             tdew = -obj.c + 1/( 1/(T+obj.c) - log(phi)/obj.b );
-        end
-    end
+     end
+
+     function ma = ma(obj, T1a, T2a, T1w, T2w, omega1, omega2, mw1)
+         T0 = 273;
+         h0lv = 2257;
+         ma = ( (omega2 - omega1)*h0lv + obj.cpv * (omega2 * (T2a - T0) ...
+             - omega1 * (T1a - T0)) + (mw1 * obj.cagua * (T2w - T0)) - mw1 ...
+             * obj.cagua * (T1w - T0))/( obj.cpa * (T1a - T2a) - ...
+             (omega1 - omega2));
+     end
+    
+     function mwevap = mwevap(~, omega1, omega2, ma)
+         mwevap = ma*(omega2 - omega1);
+     end
+   end
 end
 
