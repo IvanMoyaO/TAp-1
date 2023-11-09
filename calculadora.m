@@ -84,6 +84,22 @@ classdef calculadora
          %aportada) a partir de las humedades absolutas y el gasto masico.
          mwevap = ma*(omega2 - omega1);
      end
+
+     function twet = twet(obj, omega, kp, Ta)
+        %obtiene la temperatura de saturacion adiabatica mediante
+        %la resolucion de un sistema de ecuaciones. No es la forma mas 
+        %eficiente, se podria condensar y ahorrar la resolucion.
+        syms omegaw pvs Tw;
+        bal = obj.cpa * (Ta - obj.T0) + omega * (obj.h0lv + obj.cpv * ...
+              (Ta - obj.T0)) == obj.cpa * (Tw - obj.T0) ...
+             + omegaw * (obj.h0lv + obj.cpv * (Tw - obj.T0));
+        humabs = omegaw == 0.622 * pvs / (kp -  pvs); 
+        sat = pvs == exp(obj.a - obj.b / (Tw + obj.c)) * 1000; 
+        sist = [bal, humabs, sat];
+        vars = [omegaw pvs Tw];
+        S = vpasolve(sist, vars);
+        twet = double(S.Tw);
+     end
    end
 end
 
